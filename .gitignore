@@ -3,6 +3,7 @@
 .Rapp.history
 dta/
 csvs/
+.D_Store
 
 # Session Data files
 .RData
