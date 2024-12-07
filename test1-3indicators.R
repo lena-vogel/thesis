@@ -2,14 +2,18 @@ library(haven)
 library(dplyr)
 library(ltm)
 
-data_2006 <- read.csv("data_2006.csv")
-data_2008 <- read.csv("data_2008.csv")
-data_2010 <- read.csv("data_2010.csv")
-data_2012 <- read.csv("data_2012.csv")
+folder <- "csvs/"
+data_2006 <- read.csv(paste0(folder,"data_2006.csv"))
+data_2008 <- read.csv(paste0(folder,"data_2008.csv"))
+data_2010 <- read.csv(paste0(folder,"data_2010.csv"))
+data_2012 <- read.csv(paste0(folder,"data_2012.csv"))
 
 # concatenate data of the 2 groups
-data1 <- bind_rows(data_2010, 
-                   data_2012)
+data1 <- bind_rows(#data_2006,
+                   data_2008,
+                   data_2010, 
+                   #data_2012
+                   )
 
 ########################################################################
 ### A statistical test dependent on reliability estimates (Section 3.2)
