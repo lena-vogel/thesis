@@ -2,28 +2,29 @@ library(haven)
 library(dplyr)
 library(ltm)
 
-folder <- "csvs/"
-data_2006 <- read.csv(paste0(folder,"data_2006.csv"))
-data_2008 <- read.csv(paste0(folder,"data_2008.csv"))
-data_2010 <- read.csv(paste0(folder,"data_2010.csv"))
-data_2012 <- read.csv(paste0(folder,"data_2012.csv"))
+folder <- "csvs"
+data_2006 <- read.csv(paste0(folder,"/data_2006.csv"))
+data_2008 <- read.csv(paste0(folder,"/data_2008.csv"))
+data_2010 <- read.csv(paste0(folder,"/data_2010.csv"))
+data_2012 <- read.csv(paste0(folder,"/data_2012.csv"))
 
 # concatenate data of the 2 groups
-data1 <- bind_rows(#data_2006,
-                   data_2008,
-                   data_2010, 
-                   #data_2012
-                   )
+data1 <- bind_rows(#data_2006,  #0.08
+  #data_2008,  #0.51
+  data_2010, #0.42
+  data_2012,  #0.44
+)
 
 ########################################################################
 ### A statistical test dependent on reliability estimates (Section 3.2)
 ### from https://github.com/svsteela/StructuralRejection/tree/main
 
+d <- 3
 # Data
 z<-data1$is_dead
 x1<-data1$lb003c
-x2<-data1$lb003b
-x3<-data1$lb003a
+x2<-data1$lb003a
+x3<-data1$lb003b
 
 x<-c(x1,x2,x3)
 y<-c(rep(1,length(x1)),rep(2,length(x2)),rep(3,length(x3)))
@@ -51,8 +52,9 @@ u3<--lambda[1]*u13-lambda[2]*u23
 
 x<-c(x1,x2,x3)
 y<-c(rep(1,length(x1)),rep(2,length(x2)),rep(3,length(x3)))
-Z<-rep(z,times=3)
+Z<-rep(z,times=d)
 Zy<-Z*(rep(lambda,each=length(x1))/lambda[1])
+unique(Zy)  # Should return "1" and "2"
 mod<-lm(x~-1+factor(y)+Zy)
 theta<-predict.lm(mod,newdata=data.frame(y=c(1,1,2,2,3,3),Zy=c(0,1,
                                                                    0,lambda[2]/lambda[1],
@@ -65,19 +67,19 @@ theta<-predict.lm(mod,newdata=data.frame(y=c(1,1,2,2,3,3),Zy=c(0,1,
 mod<-lm(x~-1+factor(y)+Zy)
 
 q<-function(theta){
-  u<-cbind((1-z)*(x1-theta[1]),z*(x1-theta[1]-theta[4]),(1-z)*(x2-theta[2]),z*(x2-theta[2]-lambda[2]*theta[4]/lambda[1]),(1-z)*(x3-theta[3]),z*(x3-theta[3]-lambda[3]*theta[4]/lambda[1]))
+  u<-cbind((1-z)*(x1-theta[1]),z*(x1-theta[1]-theta[d+1]),(1-z)*(x2-theta[2]),z*(x2-theta[2]-lambda[2]*theta[d+1]/lambda[1]),(1-z)*(x3-theta[3]),z*(x3-theta[3]-lambda[3]*theta[d+1]/lambda[1]))
   g<-apply(u,2,mean)
   length(z)*t(g)%*%solve(var(u))%*%t(t(g))
 }
 res <- nlm(q,p=mod$coef)
 res$minimum # test statistic
-1-pchisq(res$minimum,df=(3-1)*(2-1)) # p-value 
+1-pchisq(res$minimum,df=(d-1)*(2-1)) # p-value 
 
 # Test statistic T_0 that recognizes reliabilities are estimated - Section 3.2
 q<-function(theta){
-  u<-cbind((1-z)*(x1-theta[1]),z*(x1-theta[1]-theta[4]),
-           (1-z)*(x2-theta[2]),z*(x2-theta[2]-lambda[2]*theta[4]/lambda[1]),
-           (1-z)*(x3-theta[3]),z*(x3-theta[3]-lambda[3]*theta[4]/lambda[1]))
+  u<-cbind((1-z)*(x1-theta[1]),z*(x1-theta[1]-theta[d+1]),
+           (1-z)*(x2-theta[2]),z*(x2-theta[2]-lambda[2]*theta[d+1]/lambda[1]),
+           (1-z)*(x3-theta[3]),z*(x3-theta[3]-lambda[3]*theta[d+1]/lambda[1]))
   p<-mean(z)
   dudtheta<--diag(c(1-p,p,1-p,p,1-p,p))
   dthetadlambda<-(theta[4]/lambda[1])*cbind(c(0,0,
@@ -100,5 +102,4 @@ q<-function(theta){
 mod<-lm(x~-1+factor(y)+Zy)
 res <- nlm(q,p=mod$coef)
 res
-1-pchisq(res$minimum,df=(3-1)*(2-1)) # p-value 
-
+1-pchisq(res$minimum,df=(d-1)*(2-1)) # p-value 
