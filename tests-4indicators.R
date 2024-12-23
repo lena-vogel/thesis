@@ -139,6 +139,7 @@ for (i in 1:d){
   xalpha[y==i]<-xc[y==i]*alpha[i]
   valpha[y==i]<-ifelse(is.na(xc[y==i]),NA,alpha[i])
 }
+theta <- c(rep(1, d), rep(1, p_levels))  ################ added !!!!!
 
 su<-10
 max_iter <- 1000

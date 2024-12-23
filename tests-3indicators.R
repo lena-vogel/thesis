@@ -165,7 +165,7 @@ repeat{
 
 # Improvement of initial estimate by minimising test statistic at fixed weight matrix
 
-E<-matrix(xc-valpha*vbeta,ncol=length(x1),nrow=d,byrow=T)
+E<-matrix(xc-valpha*vbeta,ncol=length(x1),nrow=d,byrow=T) # 0.53462135 0.19740635 0.19297110 0.08409754 0.06757470 0.05648127 0.02630990 0.02175967
 E<-E[-1,]
 g<-t(rbind(t(ifelse(z==0,1,0)*t(E)),t(ifelse(z==1,1,0)*t(E)),t(ifelse(z==2,1,0)*t(E)),t(ifelse(z==3,1,0)*t(E))))
 gm<-apply(g,2,mean,na.rm=T)
