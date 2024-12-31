@@ -1,16 +1,11 @@
-library(haven)
-library(dplyr)
-library(ltm)
-
-
 folder <- "csvs"
 data <- read.csv(paste0(folder,"/data_test2.csv"))
 
-########################################################################
-### A statistical test dependent on reliability estimates (Section 3.2)
-### from https://github.com/svsteela/StructuralRejection/tree/main
+d <- 4 # number of indicators X_i's
 
-d <- 4
+#####################################################
+### from https://github.com/svsteela/StructuralRejection/tree/main
+### A statistical test dependent on reliability estimates (Section 3.2)
 
 # Data
 z <-data$is_dead
