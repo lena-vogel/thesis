@@ -40,7 +40,7 @@ compute_results <- function(indicators,outcome) {
       results <- append(results, list(c(
         paste(combo, collapse = ", "),  # Combination of indicator names
         format(alpha, digits=2),                # Cronbach's alpha (rounded to 2 decimals)
-        if (!is.na(pvalue)) format(pvalue, digits=3) else NA  # P-value rounded to 3 decimals or NA
+        if (!is.na(pvalue)) format(pvalue, digits=2) else NA  # P-value rounded to 3 decimals or NA
       )))
     }
   }
