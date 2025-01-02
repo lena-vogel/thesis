@@ -1,6 +1,11 @@
 
-folder <- "csvs"
-data <- read.csv(paste0(folder,"/data_test2.csv"))
+load_dir <- "csvs"
+years <- c(2010,2012)
+data <-c()
+
+for (year in years) {
+  data <- bind_rows(data, read.csv(paste0(load_dir,"/data_",year,".csv")))
+}
 
 ########################################################################
 ### A statistical test dependent on reliability estimates (Section 3.2)
@@ -89,7 +94,7 @@ q<-function(theta){
 mod<-lm(x~-1+factor(y)+Zy)
 res <- nlm(q,p=mod$coef)
 res
-p2 <- 1-pchisq(res$minimum,df=(d-1)*(2-1)) # p-value 
+1-pchisq(res$minimum,df=(d-1)*(2-1)) # p-value 
 
 
 
