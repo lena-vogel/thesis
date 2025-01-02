@@ -1,5 +1,7 @@
-library(ltm) # used for cronbach.alpha
-source("stde.R") # functions to compute the p-values for the statistical test
+library(dplyr) # used for bind_rows
+library(ltm)   # used for cronbach.alpha
+
+source("stde.R") # import functions to compute the p-values for the statistical test
 
 # load files
 load_dir <- "csvs"
@@ -49,7 +51,7 @@ compute_results <- function(indicators,outcome) {
   return(results_matrix)
 }
 
-# create a matrix of indicators (using column names for clarity)
+# create a matrix of indicators
 indicators <- cbind(
   X1 = data$lb003a,
   X2 = data$lb003b,
@@ -64,6 +66,6 @@ outcome <- data$is_dead
 # compute results for each combination
 results_matrix <- compute_results(indicators, outcome)
 
-# save the matrix to a .csv file with the chosen years in the name
+# save the matrix to a .csv file with the chosen year(s) in the name
 write.csv(results_matrix, paste0(load_dir,"/results_",paste(years,collapse="_"),".csv"), row.names = FALSE)
 

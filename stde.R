@@ -72,7 +72,6 @@ stde_3_indicators <- function(combination,z) {
 
 ##########################################################################################################
 stde_4_indicators <- function(combination,z) {
-  print(combination)
   x1 <- combination[,1]
   x2 <- combination[,2]
   x3 <- combination[,3]
@@ -200,7 +199,6 @@ stde_5_indicators <- function(combination,z) {
   
   # Test statistic T_0 that recognizes reliabilities are estimated - Section 3.2
   q<-function(theta){
-    #print(paste0("Theta: ",theta[6]))
     u<-cbind((1-z)*(x1-theta[1]),z*(x1-theta[1]-theta[6]),(1-z)*(x2-theta[2]),z*(x2-theta[2]-lambda[2]*theta[6]/lambda[1]),(1-z)*(x3-theta[3]),z*(x3-theta[3]-lambda[3]*theta[6]/lambda[1]),(1-z)*(x4-theta[4]),z*(x4-theta[4]-lambda[4]*theta[6]/lambda[1]),(1-z)*(x5-theta[5]),z*(x5-theta[5]-lambda[5]*theta[6]/lambda[1]))
     p<-mean(z)
     dudtheta<--diag(c(1-p,p,1-p,p,1-p,p,1-p,p,1-p,p))
