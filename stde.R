@@ -20,6 +20,7 @@ stde_3_indicators <- function(combination,z) {
   B2<-c(1,0,1)
   B3<-c(0,1,1)
   lambda = exp(glm(A~-1+B1+B2+B3,family = quasi(link="log"))$coef)
+  print(lambda)
   
   # Estimate functions for the estimation of reliabilities
   u12<-(x1-mean(x1,na.rm=T))*(x2-mean(x2,na.rm=T))-lambda[1]*lambda[2]
@@ -91,6 +92,7 @@ stde_4_indicators <- function(combination,z) {
   B3<-c(0,1,0,1,0,1)
   B4<-c(0,0,1,0,1,1)
   lambda = exp(glm(A~-1+B1+B2+B3+B4,family = quasi(link="log"))$coef)
+  print(lambda)
   
   # Estimating functions for the estimation of reliabilities
   u12<-(x1-mean(x1,na.rm=T))*(x2-mean(x2,na.rm=T))-lambda[1]*lambda[2]
@@ -170,6 +172,7 @@ stde_5_indicators <- function(combination,z) {
   B4<-c(0,0,1,0,0,1,0,1,0,1)
   B5<-c(0,0,0,1,0,0,1,0,1,1)
   lambda = exp(glm(A~-1+B1+B2+B3+B4+B5,family = quasi(link="log"))$coef)
+  print(lambda)
   
   # Estimate functions for the estimation of reliabilities
   u12<-(x1-mean(x1,na.rm=T))*(x2-mean(x2,na.rm=T))-lambda[1]*lambda[2]
