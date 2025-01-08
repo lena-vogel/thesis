@@ -20,7 +20,7 @@ stde_3_indicators <- function(combination,z) {
   B2<-c(1,0,1)
   B3<-c(0,1,1)
   lambda = exp(glm(A~-1+B1+B2+B3,family = quasi(link="log"))$coef)
-  print(lambda)
+  diff <- (max(lambda)-min(lambda))/mean(lambda)
   
   # Estimate functions for the estimation of reliabilities
   u12<-(x1-mean(x1,na.rm=T))*(x2-mean(x2,na.rm=T))-lambda[1]*lambda[2]
@@ -67,7 +67,7 @@ stde_3_indicators <- function(combination,z) {
   
   mod<-lm(x~-1+factor(y)+Zy)
   res <- nlm(q,p=mod$coef)
-  return(1-pchisq(res$minimum,df=(d-1)*(2-1))) # p-value 
+  return(c(1-pchisq(res$minimum,df=(d-1)*(2-1)), diff)) # p-value 
 }
 
 
@@ -92,7 +92,7 @@ stde_4_indicators <- function(combination,z) {
   B3<-c(0,1,0,1,0,1)
   B4<-c(0,0,1,0,1,1)
   lambda = exp(glm(A~-1+B1+B2+B3+B4,family = quasi(link="log"))$coef)
-  print(lambda)
+  diff <- (max(lambda)-min(lambda))/mean(lambda)
   
   # Estimating functions for the estimation of reliabilities
   u12<-(x1-mean(x1,na.rm=T))*(x2-mean(x2,na.rm=T))-lambda[1]*lambda[2]
@@ -146,7 +146,7 @@ stde_4_indicators <- function(combination,z) {
   
   mod<-lm(x~-1+factor(y)+Zy)
   res <- nlm(q,p=mod$coef)
-  return(1-pchisq(res$minimum,df=(d-1)*(2-1))) # p-value 
+  return(c(1-pchisq(res$minimum,df=(d-1)*(2-1)), diff)) # p-value 
 }
 
 ##########################################################################
@@ -172,7 +172,7 @@ stde_5_indicators <- function(combination,z) {
   B4<-c(0,0,1,0,0,1,0,1,0,1)
   B5<-c(0,0,0,1,0,0,1,0,1,1)
   lambda = exp(glm(A~-1+B1+B2+B3+B4+B5,family = quasi(link="log"))$coef)
-  print(lambda)
+  diff <- (max(lambda)-min(lambda))/mean(lambda)
   
   # Estimate functions for the estimation of reliabilities
   u12<-(x1-mean(x1,na.rm=T))*(x2-mean(x2,na.rm=T))-lambda[1]*lambda[2]
@@ -227,5 +227,5 @@ stde_5_indicators <- function(combination,z) {
   
   mod<-lm(x~-1+factor(y)+Zy)
   res <- nlm(q,p=mod$coef)
-  return(1-pchisq(res$minimum,df=(d-1)*(2-1))) # p-value 
+  return(c(1-pchisq(res$minimum,df=(d-1)*(2-1)), diff)) # p-value 
 }
