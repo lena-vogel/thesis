@@ -1,8 +1,12 @@
 library(dplyr)
+library(haven) # used for read_dta
 library(this.path)
+
+# set working directory
 setwd(this.path::here())
 
 ############################################################ DATA LOADING
+# set directory of raw data
 read_dir <- "dta"
 if (!dir.exists(read_dir)) {dir.create(read_dir)}
 
@@ -21,9 +25,17 @@ exit_2012 <- read_dta(paste0(read_dir,"/randhrsexit1994_2020v1_STATA/randhrsexit
 exit_2014 <- read_dta(paste0(read_dir,"/randhrsexit1994_2020v1_STATA/randhrsexit2014v1_STATA/randhrsexit2014v1.dta"))
 exit_2016 <- read_dta(paste0(read_dir,"/randhrsexit1994_2020v1_STATA/randhrsexit2016v1_STATA/randhrsexit2016v1.dta"))
 
-# define the suffixes of the 5 questions of SWLS and the exercise level 
+# define the suffixes of the 5 questions of SWLS
 # we use only the suffixes, as the 1st character changes every year
 swls_suffixes <- c("lb003a", "lb003b", "lb003c", "lb003d", "lb003e")
+
+# define additional criteria/constructs to assess validity
+# to use it, simple uncomment the chosen variables or add other ones
+criteria <- c(
+  #"b000", # life satisfaction as a whole
+  #"d115", # optimism
+  #"d110"  # depression
+)
 
 ############################################################ FUNCTIONS
 # function to only keep selected columns var_suffixes for a year_letter corresponding to the corresponding
@@ -58,10 +70,10 @@ add_is_dead_column <- function(data, exit_files) {
 
 ############################################################ DATA PROCESSING
 # keep only the SWLS columns and remove all rows with missing data
-data_2006 <- filter_data(raw_2006, "k", swls_suffixes)
-data_2008 <- filter_data(raw_2008, "l", swls_suffixes)
-data_2010 <- filter_data(raw_2010, "m", swls_suffixes)
-data_2012 <- filter_data(raw_2012, "n", swls_suffixes)
+data_2006 <- filter_data(raw_2006, "k", c(swls_suffixes, criteria))
+data_2008 <- filter_data(raw_2008, "l", c(swls_suffixes, criteria))
+data_2010 <- filter_data(raw_2010, "m", c(swls_suffixes, criteria))
+data_2012 <- filter_data(raw_2012, "n", c(swls_suffixes, criteria))
 
 # add "is_dead" column to 2006->2010 (check against exit files for 2012 and 2014), same for 2008->2012
 data_2006 <- add_is_dead_column(data_2006, list(exit_2008, exit_2010))
@@ -86,7 +98,7 @@ write.csv(data_2012, paste0(write_dir, "/data_2012.csv"), row.names = FALSE)
 
 ############################################################# OPTIONAL DISPLAY FUNCTIONS
 # function that filters the data according to complete data for the selected variables and displays number of deleted rows
-filter_data_display <- function(data, year_letter, var_suffixes) {
+display_filter_data <- function(data, year_letter, var_suffixes) {
   # create the full variable names according to the year
   columns_to_check <- paste0(year_letter, var_suffixes)
   
