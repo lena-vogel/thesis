@@ -16,7 +16,7 @@ Structure of the repository:
     ├── preprocessing.R         # preprocesses the files from dtas and generates new files in csvs
     ├── stde.R                  # contains the functions necessary for testing the structural assumption of the univariate LFM, for 3, 4 or 5 items
     ├── validity_assessment.R   # similar to main.R but only computes the correlations with some chosen criteria or constructs
-    ├── csvs                        # folder with processed data and results
+    ├── csvs                        # folder to store processed data and results
     │   ├── data_2006.csv           # 2006 processed data
     │   ├── data_2008.csv           # 2008 processed data
     │   ├── ...               
