@@ -25,16 +25,16 @@ Structure of the repository:
     │   └── ...
     └── dta                                 # folder to store raw HRS data 
         ├── h06f4a_STATA                    # 2006 core file
-        │   ├── h06f4a.dta                  # 2006 core data
+        │   └── h06f4a.dta                  # 2006 core data
         ├── h08f3a_STATA                    # 2008 core file
-        │   ├── h08f3a.dta                  # 2008 core data
-        │   ...
-        ├── randhrsexit1994_2020v1_STATA    # all exit files until 2020
-        │   ├── randhrsexit2008v1_STATA     # 2008 exit folder
-        │       └── randhrsexit2008v1.dta"  # 2008 exit file
-        │   ├── randhrsexit2010v1_STATA     # 2010 exit folder
-        │       └── randhrsexit2010v1.dta"  # 2010 exit file
-        └── ...               
+        │   └── h08f3a.dta                  # 2008 core data
+        ├── ...
+        └── randhrsexit1994_2020v1_STATA    # all exit files until 2020
+            ├── randhrsexit2008v1_STATA     # 2008 exit folder
+            │   └── randhrsexit2008v1.dta"  # 2008 exit file
+            └── randhrsexit2010v1_STATA     # 2010 exit folder
+            │   └── randhrsexit2010v1.dta"  # 2010 exit file
+            └── ...               
 
 
 
