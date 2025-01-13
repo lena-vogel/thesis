@@ -6,7 +6,7 @@ Access the data:
 - There, download the years (also called waves) of interest into the dta file:
     - [Core files](https://hrsdata.isr.umich.edu/data-products/public-survey-data) (contains all answers to all questionnaires in 2-year intervals)
     - [Exit files](https://hrsdata.isr.umich.edu/data-products/rand-hrs-exitpost-exit-interview-and-finder-files-2020) (registers the people who die)
-- Strictly follow the following example of structure for the files downloaded
+- Strictly follow the example of structure for the files downloaded bellow.
 
 Structure of the repository:
 
