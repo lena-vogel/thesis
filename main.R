@@ -35,7 +35,10 @@ compute_results <- function(indicators,outcome) {
       subset_data <- indicators[, combo, drop = FALSE]
       d <- length(combo)
       
-      # compute Cronbach's alpha
+      print(paste("For set of items (",paste(combo, collapse = ", "),"):"))
+      n_factors <- fa.parallel(subset_data, n.iter = 30, plot = FALSE)$nfact
+
+      # compute Coefficient alpha
       alpha <- ltm::cronbach.alpha(subset_data)$alpha
       
       # compute McDonald's Omega, suppress message as we don't use Omega_h
@@ -53,7 +56,7 @@ compute_results <- function(indicators,outcome) {
   
         # compare the models with ANOVA 
         comparison <- anova(fit_unconstrained, fit_constrained)
-  
+        
         # extract the p-value
         p_value_cfa <- comparison$`Pr(>Chisq)`[2]
         }
@@ -72,7 +75,8 @@ compute_results <- function(indicators,outcome) {
         format(omega_tot, digits=2),    # Coefficient omega
         format(result[2], digits=2),    # range of loading factors estimates
         if (!is.na(p_value_cfa)) format(p_value_cfa, digits=2) else NA,  # P-value for CFA
-        if (!is.na(result[1])) format(result[1], digits=2) else NA  # P-value for STDE
+        if (!is.na(result[1])) format(result[1], digits=2) else NA,  # P-value for STDE
+        paste0(n_factors)
       )))
     }
   }
@@ -84,7 +88,8 @@ compute_results <- function(indicators,outcome) {
                                 "Omega", 
                                 "Range of loading factors",
                                 "P-value tau-equivalence",
-                                "P-value STDE")
+                                "P-value STDE",
+                                "Nb factors")
   return(results_matrix)
 }
 
