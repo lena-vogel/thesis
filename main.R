@@ -1,7 +1,8 @@
-library(dplyr) # used for bind_rows
-library(ltm)   # used for cronbach.alpha
-library(psych) # used for omega
-library(lavaan)# used for anove
+library(dplyr)   # used for bind_rows
+library(ltm)     # used for cronbach.alpha
+library(psych)   # used for omega
+library(lavaan)  # used for anova
+library(paran)   # used for paran (parallel analalysis)
 
 # import functions to compute the p-values for the statistical test
 source("stde.R") 
@@ -35,8 +36,10 @@ compute_results <- function(indicators,outcome) {
       subset_data <- indicators[, combo, drop = FALSE]
       d <- length(combo)
       
-      print(paste("For set of items (",paste(combo, collapse = ", "),"):"))
-      n_factors <- fa.parallel(subset_data, n.iter = 30, plot = FALSE)$nfact
+      # run Horn's parallel analysis
+      invisible(capture.output({
+        n_factors <- paran(subset_data,cfa=TRUE)$Retained
+      }))
 
       # compute Coefficient alpha
       alpha <- ltm::cronbach.alpha(subset_data)$alpha
