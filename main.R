@@ -28,17 +28,17 @@ compute_results <- function(indicators,outcome) {
   results <- list()
   
   # generate combinations of indicators (starting from 5 to 2 indicators)
-  for (num_vars in ncol(indicators):2) {
-    combinations <- combn(var_names, num_vars, simplify = FALSE)
+  for (d in ncol(indicators):2) {
+    combinations <- combn(var_names, d, simplify = FALSE)
+    print(paste0("Computing the results for sets of ", d, " items..."))
     
     for (combo in combinations) {
       # get the subset of columns by their names
       subset_data <- indicators[, combo, drop = FALSE]
-      d <- length(combo)
-      
+
       # run Horn's parallel analysis
       invisible(capture.output({
-        n_factors <- paran(subset_data,cfa=TRUE)$Retained
+        n_factors <- paran(subset_data,cfa=TRUE, centile = 99)$Retained
       }))
 
       # compute Coefficient alpha
@@ -113,4 +113,4 @@ results_matrix <- compute_results(indicators, outcome)
 
 # save the matrix to a .csv file with the chosen year(s) in the name
 write.csv(results_matrix, paste0(load_dir,"/results_",paste(years,collapse="_"),".csv"), row.names = FALSE)
-
+print(paste0("Resulting matrix was saved in file ",load_dir,"/results_",paste(years,collapse="_"),".csv"))
