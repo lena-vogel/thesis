@@ -3,7 +3,7 @@
 ### from https://github.com/svsteela/StructuralRejection/tree/main
 ### contains functions for sets of 3, 4 and 5 indicators, with 1 outcome.
 
-stde_3_indicators <- function(combination,z) {
+stde_3_indicators = function(combination,z) {
   # Data
   x1 <- combination[,1]
   x2 <- combination[,2]
@@ -20,7 +20,6 @@ stde_3_indicators <- function(combination,z) {
   B2<-c(1,0,1)
   B3<-c(0,1,1)
   lambda = exp(glm(A~-1+B1+B2+B3,family = quasi(link="log"))$coef)
-  diff <- (max(lambda)-min(lambda))/mean(lambda)
   
   # Estimate functions for the estimation of reliabilities
   u12<-(x1-mean(x1,na.rm=T))*(x2-mean(x2,na.rm=T))-lambda[1]*lambda[2]
@@ -64,15 +63,16 @@ stde_3_indicators <- function(combination,z) {
     g<-apply(u,2,mean)
     length(z)*t(g)%*%solve(var(uadjust))%*%t(t(g))
   }
-  
   mod<-lm(x~-1+factor(y)+Zy)
   res <- nlm(q,p=mod$coef)
-  return(c(1-pchisq(res$minimum,df=(d-1)*(2-1)), diff)) # p-value 
+  
+  # return p-value and loading factors lambdas
+  return(list(stde = 1-pchisq(res$minimum,df=(d-1)*(2-1)), 
+              lambdas = lambda))
 }
 
-
 ##########################################################################################################
-stde_4_indicators <- function(combination,z) {
+stde_4_indicators = function(combination,z) {
   x1 <- combination[,1]
   x2 <- combination[,2]
   x3 <- combination[,3]
@@ -146,11 +146,14 @@ stde_4_indicators <- function(combination,z) {
   
   mod<-lm(x~-1+factor(y)+Zy)
   res <- nlm(q,p=mod$coef)
-  return(c(1-pchisq(res$minimum,df=(d-1)*(2-1)), diff)) # p-value 
+  
+  # return p-value and loading factors lambdas
+  return(list(stde = 1-pchisq(res$minimum,df=(d-1)*(2-1)), 
+              lambdas = lambda))
 }
 
 ##########################################################################
-stde_5_indicators <- function(combination,z) {
+stde_5_indicators = function(combination,z) {
   # Data
   x1 <- combination[,1]
   x2 <- combination[,2]
@@ -227,5 +230,8 @@ stde_5_indicators <- function(combination,z) {
   
   mod<-lm(x~-1+factor(y)+Zy)
   res <- nlm(q,p=mod$coef)
-  return(c(1-pchisq(res$minimum,df=(d-1)*(2-1)), diff)) # p-value 
+  
+  # return p-value and loading factors lambdas
+  return(list(stde = 1-pchisq(res$minimum,df=(d-1)*(2-1)), 
+              lambdas = lambda))
 }

@@ -1,7 +1,5 @@
 library(dplyr) # used for bind_rows
 
-source("stde.R") # import functions to compute the p-values for the statistical test
-
 # import functions to compute the p-values for the statistical test
 source("stde.R") 
 
@@ -36,17 +34,19 @@ compute_results <- function(indicators, discriminant_construct, convergent_const
       # compute the total score
       total_score <- rowSums(subset_data, na.rm = TRUE)
       
+      print(total_score)
+      print(discriminant_construct)
       # compute correlation with discriminant criteria or construct
-      discriminant_cor <- cor(total_score, discriminant_construct, method = "pearson")
+      discriminant_cor <- cor(total_score, discriminant_construct)
 
       # compute correlation with convergent criteria or construct
-      convergent_cor <- cor(total_score, convergent_construct, method = "pearson")
+      convergent_cor <- cor(total_score, convergent_construct)
 
       # store results as a vector
       results <- append(results, list(c(
         paste(combo, collapse = ", "),  # Combination of indicator names
         format(mean(discriminant_cor), digits=2),
-        format(mean(convergent_cor), digits=2),
+        format(mean(convergent_cor), digits=2)
       )))
     }
   }
@@ -77,7 +77,7 @@ ls         <- data$b000
 ls[ls %in% c(8, 9)] <- 3
 
 # compute results for each combination
-results_matrix <- compute_results(indicators, discriminant_construct = depression, convergent_construct = ls)
+results_matrix <- compute_results(indicators, discriminant_construct = depression, convergent_construct = optimism)
 
 # save the matrix to a .csv file with the chosen year(s) in the name
 write.csv(results_matrix, paste0(load_dir,"/validity_",paste(years,collapse="_"),".csv"), row.names = FALSE)
