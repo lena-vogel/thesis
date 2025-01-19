@@ -4,6 +4,9 @@ library(psych)   # used for omega
 library(lavaan)  # used for anova
 library(paran)   # used for paran (parallel analysis)
 
+# set working directory
+setwd(this.path::here())
+
 # import functions to compute the p-values for the statistical test
 source("stde.R") 
 
@@ -84,9 +87,9 @@ compute_results <- function(indicators,outcome) {
                      else     rowSums(indicators)
       tertiles <- ntile(total_score, n_tiles)
       data_with_tertiles <- bind_cols(set_items, tertile = tertiles, outcome = outcome)
-      first_tertile_data <- filter(data_with_tertiles, tertile == 1)
-      third_tertile_data <- filter(data_with_tertiles, tertile == n_tiles)
-      effect <- mean(first_tertile_data$outcome) - mean(third_tertile_data$outcome)
+      f_tile_data <- filter(data_with_tertiles, tertile == 1)       # data in first tertile (lowest total scores)
+      n_tile_data <- filter(data_with_tertiles, tertile == n_tiles) # data in n-th tertile (lowest total scores)
+      effect <- mean(f_tile_data$outcome)/mean(n_tile_data$outcome)
       
       # store results as a vector
       results <- append(results, list(c(
@@ -97,7 +100,7 @@ compute_results <- function(indicators,outcome) {
         format(alpha, digits=2),        # Coefficient alpha
         format(omega_tot, digits=2),    # Coefficient omega
         if (!is.na(result$stde)) format(result$stde, digits=2) else NA,  # P-value for STDE
-        format(effect, digits=2)
+        format(effect, digits=3)
       )))
     }
   }
