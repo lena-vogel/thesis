@@ -34,8 +34,6 @@ compute_results <- function(indicators, discriminant_construct, convergent_const
       # compute the total score
       total_score <- rowSums(subset_data, na.rm = TRUE)
       
-      print(total_score)
-      print(discriminant_construct)
       # compute correlation with discriminant criteria or construct
       discriminant_cor <- cor(total_score, discriminant_construct)
 

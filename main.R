@@ -1,8 +1,9 @@
-library(dplyr)   # used for bind_rows
-library(ltm)     # used for cronbach.alpha
-library(psych)   # used for omega
-library(lavaan)  # used for anova
-library(paran)   # used for paran (parallel analysis)
+library(dplyr)     # used for bind_rows
+library(ltm)       # used for cronbach.alpha
+library(psych)     # used for omega
+library(lavaan)    # used for anova
+library(paran)     # used for paran (parallel analysis)
+library(this.path) # used for this.path
 
 # set working directory
 setwd(this.path::here())
@@ -17,7 +18,7 @@ load_dir <- "csvs"
 years <- c(2010,2012) 
 
 # select the n-tiles to compare levels of the latent factor
-n_tiles <- 2
+n_tiles <- 3
 
 # load the corresponding data
 data <-c()
@@ -83,13 +84,14 @@ compute_results <- function(indicators,outcome) {
       range_lambda <- (max(lambdas)-min(lambdas))/mean(lambdas)
       
       # compute the effect of total score on outcome, using 1st and 3rd tertiles
-      total_score <- if (d>2) rowSums(indicators * lambdas)
-                     else     rowSums(indicators)
+      total_score <- if (d>2) rowSums(set_items * lambdas)
+                     else     rowSums(set_items)
       tertiles <- ntile(total_score, n_tiles)
       data_with_tertiles <- bind_cols(set_items, tertile = tertiles, outcome = outcome)
       f_tile_data <- filter(data_with_tertiles, tertile == 1)       # data in first tertile (lowest total scores)
       n_tile_data <- filter(data_with_tertiles, tertile == n_tiles) # data in n-th tertile (lowest total scores)
-      effect <- mean(f_tile_data$outcome)/mean(n_tile_data$outcome)
+      effect <- if (mean(n_tile_data$outcome)!=0) mean(f_tile_data$outcome)/mean(n_tile_data$outcome)
+                else NA
       
       # store results as a vector
       results <- append(results, list(c(
@@ -114,7 +116,7 @@ compute_results <- function(indicators,outcome) {
                                 "Alpha", 
                                 "Omega", 
                                 "P-value STDE",
-                                "Effect")
+                                "Association")
   return(results_matrix)
 }
 

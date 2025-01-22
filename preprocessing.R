@@ -32,8 +32,8 @@ swls_suffixes <- c("lb003a", "lb003b", "lb003c", "lb003d", "lb003e")
 # define additional criteria/constructs to assess validity
 # to use it, simple uncomment the chosen variables or add other ones
 criteria <- c(
-  #"b000", # life satisfaction as a whole
-  #"d115", # optimism
+  #"b000" # life satisfaction as a whole
+  #"d115" # optimism
   #"d110"  # depression
 )
 
@@ -70,19 +70,19 @@ add_is_dead_column <- function(data, exit_files) {
 
 ############################################################ DATA PROCESSING
 # keep only the SWLS columns and remove all rows with missing data
-data_2006 <- filter_data(raw_2006, "k", c(swls_suffixes, criteria))
+#data_2006 <- filter_data(raw_2006, "k", c(swls_suffixes, criteria))
 data_2008 <- filter_data(raw_2008, "l", c(swls_suffixes, criteria))
 data_2010 <- filter_data(raw_2010, "m", c(swls_suffixes, criteria))
 data_2012 <- filter_data(raw_2012, "n", c(swls_suffixes, criteria))
 
 # add "is_dead" column to 2006->2010 (check against exit files for 2012 and 2014), same for 2008->2012
-data_2006 <- add_is_dead_column(data_2006, list(exit_2008, exit_2010))
+#data_2006 <- add_is_dead_column(data_2006, list(exit_2008, exit_2010))
 data_2008 <- add_is_dead_column(data_2008, list(exit_2010, exit_2012))
 data_2010 <- add_is_dead_column(data_2010, list(exit_2012, exit_2014))
 data_2012 <- add_is_dead_column(data_2012, list(exit_2014, exit_2016))
 
 # filter data to keep only rows if dead or alive 4 years later
-data_2006 <- data_2006 %>%filter(is_dead == 1 | hhidpn %in% raw_2010$hhidpn | hhidpn %in% raw_2012$hhidpn | hhidpn %in% raw_2014$hhidpn | hhidpn %in% raw_2016$hhidpn)
+#data_2006 <- data_2006 %>%filter(is_dead == 1 | hhidpn %in% raw_2010$hhidpn | hhidpn %in% raw_2012$hhidpn | hhidpn %in% raw_2014$hhidpn | hhidpn %in% raw_2016$hhidpn)
 data_2008 <- data_2008 %>%filter(is_dead == 1 | hhidpn %in% raw_2012$hhidpn | hhidpn %in% raw_2014$hhidpn | hhidpn %in% raw_2016$hhidpn)
 data_2010 <- data_2010 %>%filter(is_dead == 1 | hhidpn %in% raw_2014$hhidpn | hhidpn %in% raw_2016$hhidpn)
 data_2012 <- data_2012 %>%filter(is_dead == 1 | hhidpn %in% raw_2016$hhidpn)
@@ -91,8 +91,8 @@ data_2012 <- data_2012 %>%filter(is_dead == 1 | hhidpn %in% raw_2016$hhidpn)
 write_dir <- "csvs"
 if (!dir.exists(write_dir)) {dir.create(write_dir)}
 
-write.csv(data_2006, paste0(write_dir, "/data_2006.csv"), row.names = FALSE)
-write.csv(data_2010, paste0(write_dir, "/data_2008.csv"), row.names = FALSE)
+#write.csv(data_2006, paste0(write_dir, "/data_2006.csv"), row.names = FALSE)
+write.csv(data_2008, paste0(write_dir, "/data_2008.csv"), row.names = FALSE)
 write.csv(data_2010, paste0(write_dir, "/data_2010.csv"), row.names = FALSE)
 write.csv(data_2012, paste0(write_dir, "/data_2012.csv"), row.names = FALSE)
 
@@ -121,11 +121,12 @@ display_filter_data <- function(data, year_letter, var_suffixes) {
 }
 
 # diplay the number of people deceased in the 4 next following years for each year
-years <- c(2006, 2008, 2010, 2012)
-datasets <- list(data_2006, data_2008, data_2010, data_2012)
+years <- c(2008, 2010, 2012)
+datasets <- list(data_2008, data_2010, data_2012)
 for (i in seq_along(years)) {
   year <- years[i]
   dataset <- datasets[[i]]
   total_deceased <- sum(dataset$is_dead, na.rm = TRUE) # Include na.rm = TRUE to handle missing values
   cat("Total deceased in the 4 following years after", year, ":", total_deceased, "\n")
 }
+
