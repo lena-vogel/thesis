@@ -32,8 +32,8 @@ swls_suffixes <- c("lb003a", "lb003b", "lb003c", "lb003d", "lb003e")
 # define additional criteria/constructs to assess validity
 # to use it, simple uncomment the chosen variables or add other ones
 criteria <- c(
-  #"b000" # life satisfaction as a whole
-  #"d115" # optimism
+  #"b000", # life satisfaction as a whole
+  #"d115", # optimism
   #"d110"  # depression
 )
 

@@ -1,8 +1,11 @@
 ########################################################################
-### A statistical test dependent on reliability estimates (Section 3.2)
+### A statistical test dependent on reliability estimates 
+### Section 3.2 of VanderWeele and Vanderstaadt (2022)
 ### from https://github.com/svsteela/StructuralRejection/tree/main
-### contains functions for sets of 3, 4 and 5 indicators, with 1 outcome.
+### contains functions for sets of d = 3, 4 or 5 indicators, 
+### with 1 outcome (z) with p = 2 levels.
 
+################################################ 3 INDICATORS
 stde_3_indicators = function(combination,z) {
   # Data
   x1 <- combination[,1]
@@ -71,7 +74,7 @@ stde_3_indicators = function(combination,z) {
               lambdas = lambda))
 }
 
-##########################################################################################################
+################################################ 4 INDICATORS
 stde_4_indicators = function(combination,z) {
   x1 <- combination[,1]
   x2 <- combination[,2]
@@ -85,7 +88,7 @@ stde_4_indicators = function(combination,z) {
   y<-c(rep(1,length(x1)),rep(2,length(x2)),rep(3,length(x3)),rep(4,length(x4)))
   Z<-c(rep(z),d)
   
-  # Estimate reliabilities (Section 3.1)
+  # Estimate reliabilities
   A<-c(cov(x1,x2),cov(x1,x3),cov(x1,x4),cov(x2,x3),cov(x2,x4),cov(x3,x4))
   B1<-c(1,1,1,0,0,0)
   B2<-c(1,0,0,1,1,0)
@@ -107,7 +110,6 @@ stde_4_indicators = function(combination,z) {
   u4<--lambda[1]*u14-lambda[2]*u24-lambda[3]*u34
   
   # Fit constrained model to find initial parameter estimates
-  
   x<-c(x1,x2,x3,x4)
   y<-c(rep(1,length(x1)),rep(2,length(x2)),rep(3,length(x3)),rep(4,length(x4)))
   Z<-rep(z,times=d)
@@ -118,7 +120,7 @@ stde_4_indicators = function(combination,z) {
                                                                      0,lambda[3]/lambda[1],
                                                                      0,lambda[4]/lambda[1])))
   
-  # Test statistic T_0 that recognizes reliabilities are estimated - Section 3.2
+  # Test statistic T_STDE
   q<-function(theta){
     u<-cbind((1-z)*(x1-theta[1]),z*(x1-theta[1]-theta[d+1]),
              (1-z)*(x2-theta[2]),z*(x2-theta[2]-lambda[2]*theta[d+1]/lambda[1]),
@@ -152,7 +154,7 @@ stde_4_indicators = function(combination,z) {
               lambdas = lambda))
 }
 
-##########################################################################
+################################################ 5 INDICATORS
 stde_5_indicators = function(combination,z) {
   # Data
   x1 <- combination[,1]
@@ -203,7 +205,7 @@ stde_5_indicators = function(combination,z) {
   mod<-lm(x~-1+factor(y)+Zy)
   theta<-predict.lm(mod,newdata=data.frame(y=c(1,1,2,2,3,3,4,4,5,5),Zy=c(0,1,0,lambda[2]/lambda[1],0,lambda[3]/lambda[1],0,lambda[4]/lambda[1],0,lambda[5]/lambda[1])))
   
-  # Test statistic T_0 that recognizes reliabilities are estimated - Section 3.2
+  # Test statistic T_STDE
   q<-function(theta){
     u<-cbind((1-z)*(x1-theta[1]),z*(x1-theta[1]-theta[6]),(1-z)*(x2-theta[2]),z*(x2-theta[2]-lambda[2]*theta[6]/lambda[1]),(1-z)*(x3-theta[3]),z*(x3-theta[3]-lambda[3]*theta[6]/lambda[1]),(1-z)*(x4-theta[4]),z*(x4-theta[4]-lambda[4]*theta[6]/lambda[1]),(1-z)*(x5-theta[5]),z*(x5-theta[5]-lambda[5]*theta[6]/lambda[1]))
     p<-mean(z)
