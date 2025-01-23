@@ -1,5 +1,5 @@
 # Master's thesis code
-## "Psychometric tests as tools for causal inference"
+## Psychometric tests as tools for causal inference
 This code was written in the context of my Master's thesis at EPFL, in Winter 2024-2025. It extends the code from [VanderWeele and Vanderstaadt (2022)](https://github.com/svsteela/StructuralRejection/tree/main), which tests the structural interpretation of the reflective and univariate latent factor model. In this README file, we present how to load the data from the HRS, the structure of the repository, how to preprocess the data and run the analyses, including the test of the structural interpretation and the assessment of psychometric reliability and validity.
 
 Access the data:
