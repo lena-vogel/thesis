@@ -25,5 +25,7 @@ cov_suffixes <- c("b082",   # religious service attendance
                   "d110",   # depressive symptoms (removes 200 people)
                   "lb035g", # purpose in life
                   "lb019m", # hopelessness
-                  "lb019g"  # optimism
+                  #"lb019g"  # optimism
+                  "b000", # life satisfaction as a whole
+                  "d115", # optimism
 )

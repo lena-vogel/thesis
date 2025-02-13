@@ -120,13 +120,12 @@ compute_results <- function(indicators,outcome) {
   return(results_matrix)
 }
 
-# create a matrix of indicators
 indicators <- cbind(
-  X1 = data$lb003a,
-  X2 = data$lb003b,
-  X3 = data$lb003c,
-  X4 = data$lb003d,
-  X5 = data$lb003e
+  X1 = data$a,
+  X2 = data$b,
+  X3 = data$c,
+  X4 = data$d,
+  X5 = data$e
 )
 
 # define the outcome
