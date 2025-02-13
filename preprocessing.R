@@ -43,16 +43,21 @@ swls_standard <- c("a", "b", "c", "d", "e")
 # define additional criteria/constructs to assess validity
 # to use it, simple uncomment the chosen variables or add other ones
 criteria <- c(
-  #"b000", # life satisfaction as a whole
-  #"d115", # optimism
-  #"d110"  # depression
+  "b000", # life satisfaction as a whole
+  "d115", # optimism
+  "d110"  # depression
 )
 
 ############################################################ FUNCTIONS
 # function to rename SWLS columns to standard format
-rename_swls_columns <- function(data, year_letter) {
-  swls_cols <- grep(paste0("^", year_letter, "lb00[23][a-e]"), names(data), value = TRUE)
+rename_columns <- function(data, year_letter) {
+  swls_cols  <- grep(paste0("^", year_letter, "lb00[23][a-e]"), names(data), value = TRUE)
   names(data)[names(data) %in% swls_cols] <- swls_standard
+  
+  ls         <- grep(paste0("^", year_letter, "b000"), names(data), value = TRUE)
+  optimism   <- grep(paste0("^", year_letter, "d115"), names(data), value = TRUE)
+  depression <- grep(paste0("^", year_letter, "d110"), names(data), value = TRUE)
+  names(data)[names(data) %in% c(ls,optimism,depression)] <- criteria
   return(data)
 }
 
@@ -83,8 +88,12 @@ add_is_dead_column <- function(data, exit_files) {
 # loop over the years in dictionary to filter the data
 for (year in names(year_to_letter)) {
   raw_data <- get(paste0("raw_", year))
-  raw_data <- rename_swls_columns(raw_data, year_to_letter[year])
-  assign(paste0("data_", year), raw_data %>% dplyr::select(hhidpn, all_of(swls_standard)) %>% filter(complete.cases(.)))
+  raw_data <- rename_columns(raw_data, year_to_letter[year])
+  assign(paste0("data_", year), raw_data %>% dplyr::select(hhidpn
+                                                           , all_of(swls_standard)
+                                                           , all_of(criteria)
+                                                           ) 
+         %>% filter(complete.cases(.)))
 }
 
 # add "is_dead" column to 2006->2010 (check against exit files for 2012 and 2014), same for 2008->2012
