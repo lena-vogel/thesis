@@ -38,7 +38,8 @@ Structure of the repository:
             │   └── randhrsexit2010v1.dta"  # 2010 exit file
             └── ...               
 
-
+Structure of the data :
+![image](data-struct.png)
 
 ## Run the code
 ### 1) Preprocess the data
