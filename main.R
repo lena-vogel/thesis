@@ -15,7 +15,7 @@ source("stde.R")
 load_dir <- "csvs"
 
 # select years to load
-years <- c(2010,2012) 
+years <- c(2016,2018) 
 
 # select the n-tiles to compare levels of the latent factor
 n_tiles <- 3
@@ -135,4 +135,4 @@ outcome <- data$is_dead
 results_matrix <- compute_results(indicators, outcome)
 
 # save the matrix to a .csv file with the chosen year(s) in the name
-write.csv(results_matrix, paste0(load_dir,"/results_",paste(years,collapse="_"),".csv"), row.names = FALSE)
+write.csv(results_matrix, paste0(load_dir,"/results_2_nf_",paste(years,collapse="_"),".csv"), row.names = FALSE)

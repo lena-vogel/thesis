@@ -91,19 +91,21 @@ for (year in names(year_to_letter)) {
   raw_data <- rename_columns(raw_data, year_to_letter[year])
   assign(paste0("data_", year), raw_data %>% dplyr::select(hhidpn
                                                            , all_of(swls_standard)
-                                                           , all_of(criteria)
+                                                           #, all_of(criteria)
                                                            ) 
          %>% filter(complete.cases(.)))
 }
 
 # add "is_dead" column to 2006->2010 (check against exit files for 2012 and 2014), same for 2008->2012
 for (year in names(year_to_letter)) {
-  assign(paste0("data_", year), add_is_dead_column(get(paste0("data_", year)), list(get(paste0("exit_", as.numeric(year)+2)), get(paste0("exit_", as.numeric(year)+4)))))
+  assign(paste0("data_", year), add_is_dead_column(get(paste0("data_", year)), list(get(paste0("exit_", as.numeric(year)+2))
+                                                                                    #, get(paste0("exit_", as.numeric(year)+4))
+                                                                                    )))
 }
 
 # filter data to keep only rows if dead or alive 4 years later
 for (year in names(year_to_letter)) {
-  assign(paste0("data_", year), get(paste0("data_", year))%>%filter(is_dead == 1 | hhidpn %in% get(paste0("raw_", as.numeric(year)+4))$hhidpn))
+  assign(paste0("data_", year), get(paste0("data_", year))%>%filter(is_dead == 1 | hhidpn %in% get(paste0("raw_", as.numeric(year)+2))$hhidpn))
 }
 
 # write filtered csv files with SWLS for each year
