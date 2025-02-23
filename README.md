@@ -39,7 +39,8 @@ Structure of the repository:
             └── ...               
 
 Structure of the data :
-![image](images/data-struc.png)
+![image](images/data1.jpg)
+![image](images/data2.jpg)
 
 ## Run the code
 ### 1) Preprocess the data
