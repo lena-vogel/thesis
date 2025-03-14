@@ -41,6 +41,8 @@ Structure of the repository:
 Structure of the data :
 ![image](images/data1.jpg)
 ![image](images/data2.jpg)
+![image](images/data3.jpg)
+![image](images/data4.jpg)
 
 ## Run the code
 ### 1) Preprocess the data
